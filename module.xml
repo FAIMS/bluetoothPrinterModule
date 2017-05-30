@@ -1,0 +1,38 @@
+<module>
+<Test f="nodata">
+  <Test>
+  	<connectToBluetooth t="button"/>
+  	<testText/>
+    <testPrint t="button"/>
+  </Test>
+</Test>
+<logic>
+
+void connectToBluetooth() {
+	callback = "onBluetoothInput()";
+	delay = 0; //turns off reading from device
+	createBluetoothConnection(callback, delay);  
+	return;
+}
+void onBluetoothInput() {
+    message = getBluetoothMessage();
+    return;
+}
+
+void testPrint() {
+	userInput = getFieldValue("Test/Test/testText");
+	message  = "^XA";
+	message += "^FO250,50^ADN,18,10^FDHello World from FAIMS^FS";
+	message += "^FO250,70^ADN,18,10^FDDemo unit courtesy of Gamma Solutions.^FS";
+	message += "^FO250,90^ADN,18,10^FD"+userInput+"^FS";
+	message += "^FO20,20^BQ,2,6^FDQA,http://www.fedarch.org^FS";
+	message += "^XZ^XZ\n";
+	writeBluetoothMessage(message);
+	return;
+}
+addOnEvent("Test/Test/connectToBluetooth", "click", "connectToBluetooth()");
+addOnEvent("Test/Test/testPrint", "click", "testPrint()");
+
+</logic>
+</module>
+
