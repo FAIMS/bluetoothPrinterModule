@@ -7,23 +7,29 @@
   </Test>
 </Test>
 <logic>
+String bluetoothMessagePrepend = "";
 
 void connectToBluetooth() {
 	callback = "onBluetoothInput()";
-	delay = 0; //turns off reading from device
+	delay = 1; //turns off reading from device
 	createBluetoothConnection(callback, delay);  
+
+
+	setupmessage = "~JC\n! U1 getvar \"ezpl.label_length_max\"";
+	bluetoothMessagePrepend = "Current Label Height: ";
+	writeBluetoothMessage(setupmessage)
+
 	return;
 }
-void onBluetoothInput() {
+onBluetoothInput() {
     message = getBluetoothMessage();
-    return;
+    showToast(bluetoothMessagePrepend+message);
 }
 
 void testPrint() {
 	userInput = getFieldValue("Test/Test/testText");
 	message  = "^XA";
-	message += "^FO250,50^ADN,18,10^FDHello World from FAIMS^FS";
-	message += "^FO250,70^ADN,18,10^FDDemo unit courtesy of Gamma Solutions.^FS";
+	message += "^FO250,50^ADN,18,10^FDModule: "+getModuleName()+"^FS";
 	message += "^FO250,90^ADN,18,10^FD"+userInput+"^FS";
 	message += "^FO20,20^BQ,2,6^FDQA,http://www.fedarch.org^FS";
 	message += "^XZ^XZ\n";
@@ -35,4 +41,6 @@ addOnEvent("Test/Test/testPrint", "click", "testPrint()");
 
 </logic>
 </module>
+
+
 
