@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <arch16ns>
+<arch16n k="{1}"><![CDATA[1]]></arch16n>
+<arch16n k="{2}"><![CDATA[2]]></arch16n>
+<arch16n k="{3}"><![CDATA[3]]></arch16n>
 <arch16n k="{Accuracy__m_}"><![CDATA[Accuracy (m)]]></arch16n>
 <arch16n k="{Alert}"><![CDATA[Alert]]></arch16n>
 <arch16n k="{All}"><![CDATA[All]]></arch16n>
 <arch16n k="{A_next_ID_has_not_been_entered_please_provide_one}"><![CDATA[A next ID has not been entered. Please provide one.]]></arch16n>
+<arch16n k="{author}"><![CDATA[Author]]></arch16n>
+<arch16n k="{calibrate}"><![CDATA[calibrate]]></arch16n>
 <arch16n k="{Clean_Synced_Files}"><![CDATA[Clean Synced Files]]></arch16n>
 <arch16n k="{Confirm_Deletion}"><![CDATA[Confirm Deletion]]></arch16n>
 <arch16n k="{connectToBluetooth}"><![CDATA[connectToBluetooth]]></arch16n>
+<arch16n k="{Control}"><![CDATA[Control]]></arch16n>
+<arch16n k="{Created_at}"><![CDATA[Created at]]></arch16n>
+<arch16n k="{Create_New_Test_Record}"><![CDATA[Create New Test Record]]></arch16n>
 <arch16n k="{Delete_Cancelled}"><![CDATA[Delete Cancelled]]></arch16n>
 <arch16n k="{Delete}"><![CDATA[Delete]]></arch16n>
 <arch16n k="{Disable_External_GPS}"><![CDATA[Disable External GPS]]></arch16n>
@@ -20,20 +28,26 @@
 <arch16n k="{Enable_Sync}"><![CDATA[Enable Sync]]></arch16n>
 <arch16n k="{Entity_List}"><![CDATA[Entity List]]></arch16n>
 <arch16n k="{Entity_Types}"><![CDATA[Entity Types]]></arch16n>
+<arch16n k="{Existing_Tests}"><![CDATA[Existing Tests]]></arch16n>
 <arch16n k="{External_GPS_Disabled}"><![CDATA[External GPS Disabled]]></arch16n>
 <arch16n k="{External_GPS_Enabled}"><![CDATA[External GPS Enabled]]></arch16n>
 <arch16n k="{GPS_is_no_longer_initialised}"><![CDATA[GPS is No Longer Initialised]]></arch16n>
 <arch16n k="{GPS_is_not_initialised}"><![CDATA[GPS is Not Initialised]]></arch16n>
 <arch16n k="{GPS_Not_Initialised}"><![CDATA[GPS Not Initialised]]></arch16n>
+<arch16n k="{IDS}"><![CDATA[IDS]]></arch16n>
 <arch16n k="{Internal_GPS_Disabled}"><![CDATA[Internal GPS Disabled]]></arch16n>
 <arch16n k="{Internal_GPS_Enabled}"><![CDATA[Internal GPS Enabled]]></arch16n>
 <arch16n k="{Internal_GPS}"><![CDATA[Internal GPS]]></arch16n>
 <arch16n k="{Latitude}"><![CDATA[Latitude]]></arch16n>
+<arch16n k="{Log_in}"><![CDATA[Log in]]></arch16n>
+<arch16n k="{Login}"><![CDATA[Login]]></arch16n>
 <arch16n k="{Longitude}"><![CDATA[Longitude]]></arch16n>
+<arch16n k="{Main}"><![CDATA[Main]]></arch16n>
 <arch16n k="{New}"><![CDATA[New]]></arch16n>
 <arch16n k="{New_record_created}"><![CDATA[New Record Created]]></arch16n>
 <arch16n k="{no_GPS_position_could_be_found}"><![CDATA[No GPS position could be found]]></arch16n>
 <arch16n k="{Northing}"><![CDATA[Northing]]></arch16n>
+<arch16n k="{note}"><![CDATA[note]]></arch16n>
 <arch16n k="{off}"><![CDATA[Off]]></arch16n>
 <arch16n k="{on_and_bluetooth_connected}"><![CDATA[On and Bluetooth Connected]]></arch16n>
 <arch16n k="{on_and_bluetooth_disconnected}"><![CDATA[On and Bluetooth Disconnected]]></arch16n>
@@ -42,8 +56,11 @@
 <arch16n k="{Position}"><![CDATA[Position]]></arch16n>
 <arch16n k="{Press_OK_to_Delete_this_Record}"><![CDATA[Press OK to Delete This Record]]></arch16n>
 <arch16n k="{Previous_status}"><![CDATA[Previous Status]]></arch16n>
+<arch16n k="{Scan_Test}"><![CDATA[Scan Test]]></arch16n>
+<arch16n k="{search}"><![CDATA[Search]]></arch16n>
 <arch16n k="{Search}"><![CDATA[Search]]></arch16n>
 <arch16n k="{Search_Term}"><![CDATA[Search Term]]></arch16n>
+<arch16n k="{Sign_up}"><![CDATA[Sign up]]></arch16n>
 <arch16n k="{Sync_Disabled}"><![CDATA[Sync Disabled]]></arch16n>
 <arch16n k="{Sync_Enabled}"><![CDATA[Sync Enabled]]></arch16n>
 <arch16n k="{Take_From_GPS}"><![CDATA[Take From GPS]]></arch16n>
@@ -52,6 +69,7 @@
 <arch16n k="{testText}"><![CDATA[testText]]></arch16n>
 <arch16n k="{The_current_record_has_not_been_saved_yet}"><![CDATA[The current record has not been saved yet. Please wait 10 seconds to prevent data loss if you have entered data recently. Otherwise, press 'OK' to create a new record without waiting for any new data to be saved.]]></arch16n>
 <arch16n k="{This_record_is_unsaved_and_cannot_be_duplicated}"><![CDATA[This record is unsaved and cannot be duplicated]]></arch16n>
+<arch16n k="{Users}"><![CDATA[Users]]></arch16n>
 <arch16n k="{Validate}"><![CDATA[Validate]]></arch16n>
 <arch16n k="{Warning}"><![CDATA[Warning]]></arch16n>
 <arch16n k="{You_must_save_this_tabgroup_first}"><![CDATA[You must save this tab group first]]></arch16n>

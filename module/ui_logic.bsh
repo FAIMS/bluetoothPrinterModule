@@ -247,6 +247,8 @@ String CURRENTLY_DISPLAYED_TAB_GROUP  = "";
 
 List getTabGroups() {
   List tabGroups = new ArrayList();
+  tabGroups.add("Login");
+  tabGroups.add("Control");
   tabGroups.add("Test");
 
   return tabGroups;
@@ -536,6 +538,7 @@ String getDropdownItemValue() {
   return DROPDOWN_ITEM_VALUE;
 }
 
+addOnEvent("Login/Login/Users", "click", "DROPDOWN_ITEM_VALUE = getFieldValue(\"Login/Login/Users\")");
 
 /******************************************************************************/
 /*                             MENU VALUE GETTER                              */
@@ -759,13 +762,48 @@ void updateGPSDiagnostics() {
 /*                                 USER LOGIN                                 */
 /******************************************************************************/
 
-// WARNING: This module is missing a login menu
-String userId    = "1";
-String nameFirst = "";
-String nameLast  = "";
-String email     = "";
-User   user      = new User(userId, nameFirst, nameLast, email);
-setUser(user);
+String userMenuPath = "Login/Login/Users";
+
+void populateListForUsers(){
+  String getNonDeletedUsersQuery = "SELECT userid, fname || ' ' || lname "+
+                                   "  FROM user "+
+                                   " WHERE userdeleted is null;";
+
+  fetchAll(getNonDeletedUsersQuery, new FetchCallback() {
+    onFetch(result) {
+      populateDropDown(userMenuPath, result, true);
+    }
+  });
+}
+
+void selectUser() {
+  String userVocabId  = getFieldValue(userMenuPath);
+  if (isNull(userVocabId)) {
+    username = "";
+    userid = "";
+    return;
+  }
+  String userQ        = "SELECT userid,fname,lname,email FROM user " +
+                        "WHERE  userid='" + userVocabId + "';";
+  FetchCallback callback = new FetchCallback() {
+    onFetch(result) {
+      user = new User(
+            result.get(0),
+            result.get(1),
+            result.get(2),
+            result.get(3)
+      );
+      setUser(user);
+      username = result.get(1) + " " + result.get(2);
+      userid   = result.get(0);
+    }
+  };
+
+  fetchOne(userQ, callback);
+}
+
+addOnEvent(userMenuPath, "show",  "populateListForUsers()");
+addOnEvent(userMenuPath, "click", "selectUser()");
 
 
 /******************************************************************************/
@@ -1055,6 +1093,8 @@ String getTimestampNow(String fmt) {
 void populateAuthorAndTimestamp(String tabgroup) {
   Map tabgroupToAuthor    = new HashMap();
   Map tabgroupToTimestamp = new HashMap();
+  tabgroupToAuthor.put("Test", "Test/Test/author");
+  tabgroupToTimestamp.put("Test", "Test/Test/timestamp");
 
   String authorPath    = tabgroupToAuthor.get(tabgroup);
   String timestampPath = tabgroupToTimestamp.get(tabgroup);
@@ -1066,9 +1106,37 @@ void populateAuthorAndTimestamp(String tabgroup) {
   if (!isNull(timestampPath)) setFieldValue(timestampPath, timestampVal);
 }
 
+void onShowTest () {
+  // TODO: Add some things which should happen when this tabgroup is shown
+  saveTabGroup("Test");
+}
 
+addOnEvent("Test", "show", "onShowTest()");
 
+void onClickLoginLogin () {
+  // TODO: Add some things which should happen when this element is clicked
+  newTab("Control", true);
+}
+void onClickLoginSignup () {
+  // TODO: Add some things which should happen when this element is clicked
+  parentTabgroup__ = "Login";
+  newsignup();
+}
+void onClickControlCreateNewTestRecord () {
+  // TODO: Add some things which should happen when this element is clicked
+  parentTabgroup__ = "Control";
+  newTest();
+}
+void onClickControlScanTest () {
+  // TODO: Add some things which should happen when this element is clicked
+  parentTabgroup__ = "Control";
+  newTest();
+}
 
+addOnEvent("Login/Login/Log_in", "click", "onClickLoginLogin()");
+addOnEvent("Login/Login/Sign_up", "click", "onClickLoginSignup()");
+addOnEvent("Control/Main/Create_New_Test_Record", "click", "onClickControlCreateNewTestRecord()");
+addOnEvent("Control/Main/Scan_Test", "click", "onClickControlScanTest()");
 
 
 /******************************************************************************/
@@ -1311,11 +1379,189 @@ void loadEntityFrom(String entityID) {
   });
 }
 
+void newTest(){
+  String tabgroup = "Test";
+
+
+  setUuid(tabgroup, null);
+  newTabGroup(tabgroup);
+  populateAuthorAndTimestamp(tabgroup);
+  populateEntityListsInTabGroup(tabgroup);
+  onCreateTest__();
+
+  // WARNING: The default behaviour of calling `onCreateTest()` upon entity creation is deprecated in this version of FAIMS Tools. If you never implemented this function, this warning can safely be ignored.
+}
+
+
+void onCreateTest__(){
+  String ref      = "Test";
+  String event    = "create";
+  String stmtsStr = getStatementsString(ref, event);
+  execute(stmtsStr);
+}
+
+
+// Triggered after an existing record is loaded.
+void onFetchTest__(){
+  String ref      = "Test";
+  String event    = "fetch";
+  String stmtsStr = getStatementsString(ref, event);
+  execute(stmtsStr);
+}
+
+
+// Triggered after an existing record is saved.
+void onSaveTest__(){
+  String ref      = "Test";
+  String event    = "save";
+  String stmtsStr = getStatementsString(ref, event);
+  execute(stmtsStr);
+}
+
+addOnEvent("Test", "save", "populateEntityListsOfArchEnt(\"Test\")");
+
+// Triggered as a record is duplicated but before it's saved.
+void onCopyTest__(){
+  String ref      = "Test";
+  String event    = "copy";
+  String stmtsStr = getStatementsString(ref, event);
+  execute(stmtsStr);
+}
+
+
+void onDeleteTest__(){
+  String ref      = "Test";
+  String event    = "delete";
+  String stmtsStr = getStatementsString(ref, event);
+  execute(stmtsStr);
+}
+
+void duplicateTest(){
+  String tabgroup = "Test";
+  String uuidOld = getUuid(tabgroup);
+  setUuid(tabgroup, "");
+
+  disableAutoSave(tabgroup);
+
+  clearGpsInTabGroup(tabgroup);
+  populateAuthorAndTimestamp(tabgroup);
+  populateEntityListsInTabGroup(tabgroup);
+
+  onCopyTest__();
+
+  saveCallback = new SaveCallback() {
+    onSave(uuid, newRecord) {
+      setUuid(tabgroup, uuid);
+
+      fetchAll(getDuplicateRelnQuery(uuidOld), new FetchCallback(){
+        onFetch(result) {
+          Log.e("Module", result.toString());
+
+          if (result != null && result.size() >= 1) {
+            parentTabgroup__ = result.get(0).get(4);
+            parentTabgroup__ = parentTabgroup__.replaceAll(" ", "_");
+          }
+
+          makeDuplicateRelationships(result, getUuid(tabgroup));
+
+          showToast("{Duplicated_record}");
+          dialog.dismiss();
+        }
+      });
+
+      saveTabGroup(tabgroup);
+    }
+  };
+
+  String extraDupeAttributes = "";
+  fetchAll(getDuplicateAttributeQuery(uuidOld, extraDupeAttributes), new FetchCallback(){
+    onFetch(result) {
+      excludeAttributes = new ArrayList();
+
+      duplicateTabGroup(tabgroup, null, getExtraAttributes(result), excludeAttributes, saveCallback);
+    }
+  });
+}
+
+void deleteTest(){
+  String tabgroup = "Test";
+
+  if (isNull(getUuid(tabgroup))) {
+    cancelTabGroup(tabgroup, true);
+  } else {
+    showAlert("{Confirm_Deletion}", "{Press_OK_to_Delete_this_Record}", "reallyDeleteTest()", "doNotDelete()");
+  }
+}
+
+void reallyDeleteTest(){
+  String tabgroup = "Test";
+  deleteArchEnt(getUuid(tabgroup));
+  cancelTabGroup(tabgroup, false);
+  populateEntityListsOfArchEnt(tabgroup);
+  onDeleteTest__();
+}
+
 
 void doNotDelete(){
   showToast("{Delete_Cancelled}");
 }
-addOnEvent("Test", "show", "removeNavigationButtons()");
+addOnEvent("Login", "show", "removeNavigationButtons()");
+addOnEvent("Control", "show", "removeNavigationButtons()");
+addOnEvent("Test", "show", "addNavigationButtons(\"Test\")");
+
+/******************************************************************************/
+/*                                   SEARCH                                   */
+/******************************************************************************/
+addOnEvent("Control/Search"               , "show"  , "search();");
+addOnEvent("Control/Search/Entity_List"   , "click" , "loadEntity();");
+addOnEvent("Control/Search/Search_Button" , "click" , "search()");
+addOnEvent("Control/Search/Search_Term"   , "click" , "clearSearch()");
+
+void clearSearch(){
+  setFieldValue("Control/Search/Search_Term","");
+}
+
+void search(){
+  String tabgroup = "Control";
+  String refEntityList  = tabgroup + "/Search/Entity_List";
+  String refSearchTerm  = tabgroup + "/Search/Search_Term";
+  String refEntityTypes = tabgroup + "/Search/Entity_Types";
+
+  String type = "";
+  String term = getFieldValue(refSearchTerm);
+  String searchQuery = "SELECT uuid, response "+
+                       "  FROM latestNonDeletedArchEntFormattedIdentifiers  "+
+                       " WHERE uuid in (SELECT uuid "+
+                       "                  FROM latestNonDeletedArchEntIdentifiers "+
+                       "                 WHERE measure LIKE '"+term+"'||'%'  "+
+                       "                   AND ( aenttypename LIKE '"+type+"' OR '' = '"+type+"' ) "+
+                       "                )  "+
+                       " ORDER BY response "+
+                       " LIMIT ? "+
+                       "OFFSET ? ";
+
+  populateCursorList(refEntityList, searchQuery, 25);
+  refreshTabgroupCSS(tabgroup);
+
+  Log.d("Module", "Search query: " + searchQuery);
+}
+
+void loadTestFrom(String uuid) {
+  String tabgroup = "Test";
+  setUuid(tabgroup, uuid);
+  if (isNull(uuid)) return;
+
+  FetchCallback cb = new FetchCallback() {
+    onFetch(result) {
+      populateEntityListsInTabGroup(tabgroup);
+      // WARNING: The default behaviour of calling `onFetchTest()` upon fetching an entity is deprecated in this version of FAIMS Tools. If you never implemented this function, this warning can safely be ignored.
+      onFetchTest__();
+    }
+  };
+
+  showTabGroup(tabgroup, uuid, cb);
+}
+
 
 /******************************************************************************/
 /*                          TAKE FROM GPS BUTTON(S)                           */
@@ -1337,6 +1583,87 @@ void clearGpsInTab(String tabRef) {
   setFieldValue(tabRef + "Longitude" , "");
   setFieldValue(tabRef + "Easting"   , "");
   setFieldValue(tabRef + "Northing"  , "");
+}
+
+/******************************************************************************/
+/*                       AUTONUMBERING HELPER FUNCTIONS                       */
+/******************************************************************************/
+/*
+ * If value of field specified by `ref` is null, sets the field to `defaultVal`,
+ * otherwise increments its value.
+ *
+ * Returns the value the field was updated to.
+ */
+Integer incField(String ref, Integer defaultVal) {
+  String val = getFieldValue(ref);
+
+  if (isNull(val)) {
+    setFieldValue(ref, defaultVal);
+    return defaultVal;
+  }
+
+  Integer inc = Integer.parseInt(val) + 1;
+  setFieldValue(ref, inc);
+  insertIntoLocalSettings(ref, inc.toString());
+
+  return inc;
+}
+
+/* Increments the field at `ref` or returns null if it does not contain a
+ * number.
+ */
+Integer incField(String ref) {
+  return incField(ref, 1);
+}
+
+List getStartingIdPaths() {
+  List l = new ArrayList();
+
+  return l;
+}
+
+void loadStartingId(String ref) {
+  // If there's already a value in the field, we don't need to load one.
+  String val = getFieldValue(ref);
+  if (!isNull(val)) {
+    return;
+  }
+
+  // Load a value into the field. Set it to 1 if no value has been previously
+  // saved.
+  String idQ = "SELECT value FROM localSettings WHERE key = '" + ref + "';";
+  fetchOne(idQ, new FetchCallback() {
+    onFetch(result) {
+      if (isNull(result)) setFieldValue(ref, "1"          );
+      else                setFieldValue(ref, result.get(0));
+    }
+  });
+}
+
+loadStartingIds() {
+  List l = getStartingIdPaths();
+
+  for (ref : l) {
+    loadStartingId(ref);
+  }
+}
+
+addOnEvent("Control", "show", "loadStartingIds()");
+
+/*
+ * Sets bindings to save autonum'd fields whenever they're blurred.
+ */
+for (ref : getStartingIdPaths()) {
+  onFocus(ref, null, "insertIntoLocalSettings(\"" + ref + "\", getFieldValue(\"" + ref + "\"));");
+}
+
+void incAutoNum(String destPath) {
+  Map destToSource = new HashMap();
+
+  String sourcePath = destToSource.get(destPath);
+  String destVal    = getFieldValue(sourcePath);
+  setFieldValue(destPath, destVal);
+  incField(sourcePath);
 }
 
 /******************************************************************************/
@@ -1462,41 +1789,115 @@ String getEntityMenuPopulationFunction(String[] menuDescriptor) {
 }
 
 ENTITY_MENUS = new ArrayList();
+ENTITY_MENUS.add(new String[] {
+  "List",
+  "Control/Main/Existing_Tests",
+  "getUuid(\"Control\")",
+  "Test",
+  ""
+});
 for (m : ENTITY_MENUS) {
   String path         = m[1];
   String functionCall = getEntityMenuPopulationFunction(m);
 
   execute(functionCall);
 }
+addOnEvent("Control/Main/Existing_Tests", "click", "loadEntity()");
 
 /******************************************************************************/
 /*                             HANDWRITTEN LOGIC                              */
 /******************************************************************************/
 
 
+String replaceFirst(String haystack, String needle, String replacement) {
+  i = haystack.indexOf(needle);
+  if (i == -1)           return haystack;
+  if (needle.equals("")) return haystack;
+  pre  = haystack.substring(0, i                                   );
+  post = haystack.substring(   i+needle.length(), haystack.length());
+  return pre + replacement + post;
+}
+
+String replaceFirst(String haystack, String replacement) {
+  return replaceFirst(haystack, "%s", replacement);
+}
+
+String dbReplaceFirst(String haystack, String needle, String replacement) {
+  String escapedReplacement = DatabaseUtils.sqlEscapeString(replacement);
+  return replaceFirst(haystack, needle, escapedReplacement);
+}
+
+String dbReplaceFirst(String haystack, String replacement) {
+  return dbReplaceFirst(haystack, "%s", replacement);
+}
+	
+String bluetoothMessagePrepend = "";
+
 void connectToBluetooth() {
 	callback = "onBluetoothInput()";
-	delay = 0; //turns off reading from device
+	delay = 1; //turns off reading from device
 	createBluetoothConnection(callback, delay);  
+
+
+
+  feedbackMessage="! U1 getvar \"ezpl.label_length_max\"\n";
+  writeBluetoothMessage(feedbackMessage);
+
 	return;
 }
-void onBluetoothInput() {
-    message = getBluetoothMessage();
-    return;
+
+void calibrate(){
+	
+
+  setupmessage = "~JC\n";
+  bluetoothMessagePrepend = "Current Label Height: ";
+  writeBluetoothMessage(setupmessage);
+}
+onBluetoothInput() {
+    btmessage = getBluetoothMessage();
+    showAlert("Media length", bluetoothMessagePrepend+btmessage);
 }
 
 void testPrint() {
-	userInput = getFieldValue("Test/Test/testText");
-	message  = "^XA";
-	message += "^FO250,50^ADN,18,10^FDHello World from FAIMS^FS";
-	message += "^FO250,70^ADN,18,10^FDDemo unit courtesy of Gamma Solutions.^FS";
-	message += "^FO250,90^ADN,18,10^FD"+userInput+"^FS";
-	message += "^FO20,20^BQ,2,6^FDQA,http://www.fedarch.org^FS";
-	message += "^XZ^XZ\n";
-	writeBluetoothMessage(message);
-	return;
+
+ String identityQuery = "SELECT uuid, response, aenttypename, createdby, createdat FROM latestNonDeletedArchEntFormattedIdentifiers JOIN createdmodifiedatby WHERE uuid = {uuid}; ";
+ searchQuery = dbReplaceFirst(identityQuery, "{uuid}", getUuid("Test"));
+
+
+  FetchCallback printCallback = new FetchCallback() {
+    onFetch(result) {      
+		userInput = getFieldValue("Test/Test/testText");
+		message  = "^XA^POI^FO30,20^XGE:FAIMS-BL.PCX,1.1,1.1^FS^FO35,180^A0,20,20^FDwww.fedarch.org^FS";
+		message += "^FO200,30^A0,20,20^FD{aent}^FS";
+		message += "^FO200,50^A0,40,40^FD{id}^FS";
+		message += "^FO200,90^A0,20,20^FDCreated by: {createdby}^FS";
+		message += "^FO200,110^A0,20,20^FDModule: {moduleName}^FS";
+		message += "^FO200,130^A0,20,20^FDCreated at: {createdat}^FS";
+		message += "^FO600,0^BQ,2,5^FDMA,http://{connectedServer}/project_modules/{moduleID}/edit_arch_ent_records/{uuid}^FS";
+		message += "^XZ\n";
+
+
+		message = dbReplaceFirst(message, "{uuid}", response.get(0));
+		message = dbReplaceFirst(message, "{id}", response.get(1));
+		message = dbReplaceFirst(message, "{aent}", response.get(2));
+		message = dbReplaceFirst(message, "{createdby}", response.get(3));
+		message = dbReplaceFirst(message, "{createdat}", response.get(4));
+		message = dbReplaceFirst(message, "{moduleName}",  getModuleName()+" "+getModuleVersion());
+
+		message = dbReplaceFirst(message, "{connectedServer}",  getConnectedServer());
+		message = dbReplaceFirst(message, "{moduleID}",  getModuleID());
+		showAlert(message);
+		writeBluetoothMessage(message);
+    }
+  };
+ 
+  fetchOne(searchquery, printCallback);
+  return;
+
+
 }
 addOnEvent("Test/Test/connectToBluetooth", "click", "connectToBluetooth()");
+addOnEvent("Test/Test/calibrate", "click", "calibrate()");
 addOnEvent("Test/Test/testPrint", "click", "testPrint()");
 
 

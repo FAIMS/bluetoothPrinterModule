@@ -1,12 +1,76 @@
 <module>
-<Test f="nodata">
+<Login f="nodata">
+    <Login>
+      <Users t="dropdown" f="user nocertainty noannotation"/>
+      <Log_in  t="button" l="Control"/>
+      <Sign_up t="button" l="signup"/>
+    </Login>
+  </Login>
+   <Control f="nodata">
+    <Main f="noscroll">    	
+      <Create_New_Test_Record t="button" f="nocertainty noannotation" l="Test"/>
+      <Scan_Test t="button" f="nocertainty noannotation" l="Test"/>
+      <Existing_Tests t="list" f="nocertainty noannotation" e="Test"/>
+    </Main>
+    <IDS>
+      <autonum/>
+    </IDS>    
+    <search/>
+  </Control>	
+<Test>
   <Test>
   	<connectToBluetooth t="button"/>
-  	<testText/>
+  	<calibrate t="button"/>
     <testPrint t="button"/>
+
+	  <author f="id nocertainty noannotation">
+        <str>
+          <pos>2</pos>
+          <fmt>$2- </fmt>
+        </str>
+      </author>
+      <timestamp f="id nocertainty noannotation">
+        Created at
+        <str>
+          <pos>3</pos>
+          <fmt>$2</fmt>
+        </str>
+      </timestamp>
+      
+      <testText f="id" t="input">
+        <str>
+          <pos>1</pos>
+          <fmt>$2- </fmt>
+        </str>
+      </testText>
+      <note t="input"/>
+
   </Test>
 </Test>
 <logic>
+
+String replaceFirst(String haystack, String needle, String replacement) {
+  i = haystack.indexOf(needle);
+  if (i == -1)           return haystack;
+  if (needle.equals("")) return haystack;
+  pre  = haystack.substring(0, i                                   );
+  post = haystack.substring(   i+needle.length(), haystack.length());
+  return pre + replacement + post;
+}
+
+String replaceFirst(String haystack, String replacement) {
+  return replaceFirst(haystack, "%s", replacement);
+}
+
+String dbReplaceFirst(String haystack, String needle, String replacement) {
+  String escapedReplacement = DatabaseUtils.sqlEscapeString(replacement);
+  return replaceFirst(haystack, needle, escapedReplacement);
+}
+
+String dbReplaceFirst(String haystack, String replacement) {
+  return dbReplaceFirst(haystack, "%s", replacement);
+}
+	
 String bluetoothMessagePrepend = "";
 
 void connectToBluetooth() {
@@ -15,32 +79,75 @@ void connectToBluetooth() {
 	createBluetoothConnection(callback, delay);  
 
 
-	setupmessage = "~JC\n! U1 getvar \"ezpl.label_length_max\"";
-	bluetoothMessagePrepend = "Current Label Height: ";
-	writeBluetoothMessage(setupmessage)
+
+  feedbackMessage="! U1 getvar \"ezpl.label_length_max\"\n";
+  writeBluetoothMessage(feedbackMessage);
 
 	return;
 }
+
+void calibrate(){
+	
+
+  setupmessage = "~JC\n";
+  bluetoothMessagePrepend = "Current Label Height: ";
+  writeBluetoothMessage(setupmessage);
+}
 onBluetoothInput() {
-    message = getBluetoothMessage();
-    showToast(bluetoothMessagePrepend+message);
+    btmessage = getBluetoothMessage();
+    showAlert("Media length", bluetoothMessagePrepend+btmessage);
 }
 
 void testPrint() {
-	userInput = getFieldValue("Test/Test/testText");
-	message  = "^XA";
-	message += "^FO250,50^ADN,18,10^FDModule: "+getModuleName()+"^FS";
-	message += "^FO250,90^ADN,18,10^FD"+userInput+"^FS";
-	message += "^FO20,20^BQ,2,6^FDQA,http://www.fedarch.org^FS";
-	message += "^XZ^XZ\n";
-	writeBluetoothMessage(message);
-	return;
+
+ String identityQuery = "SELECT uuid, response, aenttypename, createdby, createdat FROM latestNonDeletedArchEntFormattedIdentifiers JOIN createdmodifiedatby WHERE uuid = {uuid}; ";
+ searchQuery = dbReplaceFirst(identityQuery, "{uuid}", getUuid("Test"));
+
+
+  FetchCallback printCallback = new FetchCallback() {
+    onFetch(result) {      
+		userInput = getFieldValue("Test/Test/testText");
+		message  = "^XA^POI^FO30,20^XGE:FAIMS-BL.PCX,1.1,1.1^FS^FO35,180^A0,20,20^FDwww.fedarch.org^FS";
+		message += "^FO200,30^A0,20,20^FD{aent}^FS";
+		message += "^FO200,50^A0,40,40^FD{id}^FS";
+		message += "^FO200,90^A0,20,20^FDCreated by: {createdby}^FS";
+		message += "^FO200,110^A0,20,20^FDModule: {moduleName}^FS";
+		message += "^FO200,130^A0,20,20^FDCreated at: {createdat}^FS";
+		message += "^FO600,0^BQ,2,5^FDMA,http://{connectedServer}/project_modules/{moduleID}/edit_arch_ent_records/{uuid}^FS";
+		message += "^XZ\n";
+
+
+		message = dbReplaceFirst(message, "{uuid}", response.get(0));
+		message = dbReplaceFirst(message, "{id}", response.get(1));
+		message = dbReplaceFirst(message, "{aent}", response.get(2));
+		message = dbReplaceFirst(message, "{createdby}", response.get(3));
+		message = dbReplaceFirst(message, "{createdat}", response.get(4));
+		message = dbReplaceFirst(message, "{moduleName}",  getModuleName()+" "+getModuleVersion());
+
+		message = dbReplaceFirst(message, "{connectedServer}",  getConnectedServer());
+		message = dbReplaceFirst(message, "{moduleID}",  getModuleID());
+		showAlert(message);
+		writeBluetoothMessage(message);
+    }
+  };
+ 
+  fetchOne(searchquery, printCallback);
+  return;
+
+
 }
 addOnEvent("Test/Test/connectToBluetooth", "click", "connectToBluetooth()");
+addOnEvent("Test/Test/calibrate", "click", "calibrate()");
 addOnEvent("Test/Test/testPrint", "click", "testPrint()");
 
 </logic>
 </module>
+
+
+
+
+
+
 
 
 
