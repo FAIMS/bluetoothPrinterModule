@@ -62,13 +62,13 @@ String replaceFirst(String haystack, String replacement) {
   return replaceFirst(haystack, "%s", replacement);
 }
 
-String dbReplaceFirst(String haystack, String needle, String replacement) {
+String replaceFirst(String haystack, String needle, String replacement) {
   String escapedReplacement = DatabaseUtils.sqlEscapeString(replacement);
   return replaceFirst(haystack, needle, escapedReplacement);
 }
 
-String dbReplaceFirst(String haystack, String replacement) {
-  return dbReplaceFirst(haystack, "%s", replacement);
+String replaceFirst(String haystack, String replacement) {
+  return replaceFirst(haystack, "%s", replacement);
 }
 	
 String bluetoothMessagePrepend = "";
@@ -101,7 +101,7 @@ onBluetoothInput() {
 void testPrint() {
 
  String identityQuery = "SELECT uuid, response, aenttypename, createdby, createdat FROM latestNonDeletedArchEntFormattedIdentifiers JOIN createdmodifiedatby WHERE uuid = {uuid}; ";
- searchQuery = dbReplaceFirst(identityQuery, "{uuid}", getUuid("Test"));
+ searchQuery = replaceFirst(identityQuery, "{uuid}", getUuid("Test"));
 
 
   FetchCallback printCallback = new FetchCallback() {
@@ -117,15 +117,15 @@ void testPrint() {
 		message += "^XZ\n";
 
 
-		message = dbReplaceFirst(message, "{uuid}", response.get(0));
-		message = dbReplaceFirst(message, "{id}", response.get(1));
-		message = dbReplaceFirst(message, "{aent}", response.get(2));
-		message = dbReplaceFirst(message, "{createdby}", response.get(3));
-		message = dbReplaceFirst(message, "{createdat}", response.get(4));
-		message = dbReplaceFirst(message, "{moduleName}",  getModuleName()+" "+getModuleVersion());
+		message = replaceFirst(message, "{uuid}", response.get(0));
+		message = replaceFirst(message, "{id}", response.get(1));
+		message = replaceFirst(message, "{aent}", response.get(2));
+		message = replaceFirst(message, "{createdby}", response.get(3));
+		message = replaceFirst(message, "{createdat}", response.get(4));
+		message = replaceFirst(message, "{moduleName}",  getModuleName()+" "+getModuleVersion());
 
-		message = dbReplaceFirst(message, "{connectedServer}",  getConnectedServer());
-		message = dbReplaceFirst(message, "{moduleID}",  getModuleID());
+		message = replaceFirst(message, "{connectedServer}",  getConnectedServer());
+		message = replaceFirst(message, "{moduleID}",  getModuleID());
 		showAlert(message);
 		writeBluetoothMessage(message);
     }
