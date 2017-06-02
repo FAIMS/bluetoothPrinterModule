@@ -8,77 +8,51 @@
   </Login>
    <Control f="nodata">
     <Main f="noscroll">    	
-      <Create_New_Test_Record t="button" f="nocertainty noannotation" l="Test"/>
-      <Scan_Test t="button" f="nocertainty noannotation" l="Test"/>
-      <Existing_Tests t="list" f="nocertainty noannotation" e="Test"/>
+      <Create_New_Earth_Sample t="button" l="Earth_Sample"/>
+      <Scan_QR_Code t="button" lq="Earth_Sample"/>
+      <Existing_Earth_Sample t="list" f="nocertainty noannotation" e="Earth_Sample"/>
     </Main>
     <IDS>
       <autonum/>
     </IDS>    
     <search/>
   </Control>	
-<Test>
-  <Test>
+<Earth_Sample>
+  <Earth_Sample>
   	<connectToBluetooth t="button"/>
-  	<calibrate t="button"/>
-    <testPrint t="button"/>
-
-	  <author f="id nocertainty noannotation">
-        <str>
-          <pos>2</pos>
-          <fmt>$2- </fmt>
-        </str>
-      </author>
-      <timestamp f="id nocertainty noannotation">
-        Created at
-        <str>
-          <pos>3</pos>
-          <fmt>$2</fmt>
-        </str>
-      </timestamp>
-      
-      <testText f="id" t="input">
+    <Print_QR_Code t="button"/>
+    <Print_Barcode t="button"/>
+      <IGSN_Identifier f="id" t="input">
         <str>
           <pos>1</pos>
-          <fmt>$2- </fmt>
+          <fmt>$2 - </fmt>
         </str>
-      </testText>
-      <note t="input"/>
+      </IGSN_Identifier>
 
-  </Test>
-</Test>
+      <Material f="id" t="input">
+      	<str>
+          <pos>2</pos>
+          <fmt>$2 </fmt>
+        </str>
+      </Material>
+      <Description t="input"/>
+      <gps/>
+      
+  </Earth_Sample>
+</Earth_Sample>
 <logic>
 
-String replaceFirst(String haystack, String needle, String replacement) {
-  i = haystack.indexOf(needle);
-  if (i == -1)           return haystack;
-  if (needle.equals("")) return haystack;
-  pre  = haystack.substring(0, i                                   );
-  post = haystack.substring(   i+needle.length(), haystack.length());
-  return pre + replacement + post;
-}
-
-String replaceFirst(String haystack, String replacement) {
-  return replaceFirst(haystack, "%s", replacement);
-}
-
-String replaceFirst(String haystack, String needle, String replacement) {
-  String escapedReplacement = DatabaseUtils.sqlEscapeString(replacement);
-  return replaceFirst(haystack, needle, escapedReplacement);
-}
-
-String replaceFirst(String haystack, String replacement) {
-  return replaceFirst(haystack, "%s", replacement);
-}
-	
 String bluetoothMessagePrepend = "";
 
 void connectToBluetooth() {
 	callback = "onBluetoothInput()";
-	delay = 1; //turns off reading from device
+	delay = 0; //turns off reading from device
 	createBluetoothConnection(callback, delay);  
 
+  setupmessage = "\n~JC\n";
+  writeBluetoothMessage(setupmessage);
 
+  bluetoothMessagePrepend = "Current Label Height: ";
 
   feedbackMessage="! U1 getvar \"ezpl.label_length_max\"\n";
   writeBluetoothMessage(feedbackMessage);
@@ -89,56 +63,86 @@ void connectToBluetooth() {
 void calibrate(){
 	
 
-  setupmessage = "~JC\n";
+  setupmessage = "^XSY,Y\n~JC\n";
   bluetoothMessagePrepend = "Current Label Height: ";
   writeBluetoothMessage(setupmessage);
 }
 onBluetoothInput() {
     btmessage = getBluetoothMessage();
-    showAlert("Media length", bluetoothMessagePrepend+btmessage);
+    showWarning("BLAH",bluetoothMessagePrepend+btmessage);
 }
 
-void testPrint() {
 
- String identityQuery = "SELECT uuid, response, aenttypename, createdby, createdat FROM latestNonDeletedArchEntFormattedIdentifiers JOIN createdmodifiedatby WHERE uuid = {uuid}; ";
- searchQuery = replaceFirst(identityQuery, "{uuid}", getUuid("Test"));
+
+void printQR() {
+
+ String identityQuery = "SELECT uuid, response, aenttypename, createdby, datetime(createdat, 'localtime') FROM latestNonDeletedArchEntFormattedIdentifiers JOIN createdmodifiedatby using (uuid) WHERE uuid = {uuid}; ";
+ searchQuery = replaceFirst(identityQuery, "{uuid}", getUuid("Earth_Sample"));
 
 
   FetchCallback printCallback = new FetchCallback() {
     onFetch(result) {      
-		userInput = getFieldValue("Test/Test/testText");
-		message  = "^XA^POI^FO30,20^XGE:FAIMS-BL.PCX,1.1,1.1^FS^FO35,180^A0,20,20^FDwww.fedarch.org^FS";
-		message += "^FO200,30^A0,20,20^FD{aent}^FS";
-		message += "^FO200,50^A0,40,40^FD{id}^FS";
-		message += "^FO200,90^A0,20,20^FDCreated by: {createdby}^FS";
-		message += "^FO200,110^A0,20,20^FDModule: {moduleName}^FS";
-		message += "^FO200,130^A0,20,20^FDCreated at: {createdat}^FS";
-		message += "^FO600,0^BQ,2,5^FDMA,http://{connectedServer}/project_modules/{moduleID}/edit_arch_ent_records/{uuid}^FS";
+		message  = "\n^XA^POI^FO12,0^XGE:FAIMS-BL.PCX,1.1,1.1^FS^FO15,160^A0,20,20^FDwww.fedarch.org^FS\n";
+		message += "^FO170,0^A0,50,50^TBN,455,120^FD{id}^FS\n";
+		message += "^FO170,125^A0,20,20^FDEntity: {aent}. Name: {createdby}^FS\n";		
+		message += "^FO170,145^A0,20,20^FDModule: {moduleName}^FS\n";
+		message += "^FO170,165^A0,20,20^FDCreated at: {createdat} GMT^FS\n";
+		message += "^FO630,0^BQ,2,8^FDQM,N{uuid}^FS\n";
 		message += "^XZ\n";
 
 
-		message = replaceFirst(message, "{uuid}", response.get(0));
-		message = replaceFirst(message, "{id}", response.get(1));
-		message = replaceFirst(message, "{aent}", response.get(2));
-		message = replaceFirst(message, "{createdby}", response.get(3));
-		message = replaceFirst(message, "{createdat}", response.get(4));
+		message = replaceFirst(message, "{uuid}", result.get(0));
+		message = replaceFirst(message, "{id}", result.get(1));
+		message = replaceFirst(message, "{aent}", result.get(2));
+		message = replaceFirst(message, "{createdby}", result.get(3));
+		message = replaceFirst(message, "{createdat}", result.get(4));
 		message = replaceFirst(message, "{moduleName}",  getModuleName()+" "+getModuleVersion());
-
-		message = replaceFirst(message, "{connectedServer}",  getConnectedServer());
-		message = replaceFirst(message, "{moduleID}",  getModuleID());
-		showAlert(message);
+		//setFieldValue("Earth_Sample/Earth_Sample/Printer_Code", message);
 		writeBluetoothMessage(message);
     }
   };
  
-  fetchOne(searchquery, printCallback);
+  fetchOne(searchQuery, printCallback);
   return;
 
 
 }
-addOnEvent("Test/Test/connectToBluetooth", "click", "connectToBluetooth()");
-addOnEvent("Test/Test/calibrate", "click", "calibrate()");
-addOnEvent("Test/Test/testPrint", "click", "testPrint()");
+
+
+void printBarcode() {
+
+ String identityQuery = "SELECT uuid, response, aenttypename, createdby, datetime(createdat, 'localtime') FROM latestNonDeletedArchEntFormattedIdentifiers JOIN createdmodifiedatby using (uuid) WHERE uuid = {uuid}; ";
+ searchQuery = replaceFirst(identityQuery, "{uuid}", getUuid("Earth_Sample"));
+
+
+  FetchCallback printCallback = new FetchCallback() {
+    onFetch(result) {      
+		message  = "\n^XA^PO^FO20,90^XGE:FAIMS-SM.PCX,1.1,1.1^FS^FO15,155^A0,15,15^FDwww.fedarch.org^FS\n";
+		message += "^FO50,0^BY3^BCN,85,N,N,N^FD{uuid}^FS\n";
+		message += "^FO140,90^A0,25,25^FD{aent}, {createdby}, {createdat}^FS\n";		
+		message += "^FO140,120^A0,60,60^TBN,650,90^FD{id}^FS\n";
+		message += "^XZ\n";
+
+
+		message = replaceFirst(message, "{uuid}", result.get(0));
+		message = replaceFirst(message, "{id}", result.get(1));
+		message = replaceFirst(message, "{aent}", result.get(2));
+		message = replaceFirst(message, "{createdby}", result.get(3));
+		message = replaceFirst(message, "{createdat}", result.get(4));
+		message = replaceFirst(message, "{moduleName}",  getModuleName()+" "+getModuleVersion());
+		//setFieldValue("Earth_Sample/Earth_Sample/Printer_Code", message);
+		writeBluetoothMessage(message);
+    }
+  };
+ 
+  fetchOne(searchQuery, printCallback);
+  return;
+
+
+}
+addOnEvent("Earth_Sample/Earth_Sample/connectToBluetooth", "click", "connectToBluetooth()");
+addOnEvent("Earth_Sample/Earth_Sample/Print_QR_Code", "click", "printQR()");
+addOnEvent("Earth_Sample/Earth_Sample/Print_Barcode", "click", "printBarcode()");
 
 </logic>
 </module>

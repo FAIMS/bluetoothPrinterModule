@@ -1,0 +1,258 @@
+digraph {
+	graph [
+		rankdir="LR"
+		fontname="Roboto"
+		splines=ortho
+		outputorder="nodesfirst"
+		ranksep=2
+	];
+	node [
+		fontsize="12"
+		shape=plaintext
+		fontname="Roboto"
+		margin=0
+		shape=none
+	];
+
+	subgraph cluster_9d6322c1f4 {
+		label="Login"
+		bgcolor="lightblue"
+
+		cluster_anchor_9d6322c1f4 [label="" fixedsize=shape width=0 height=0]
+
+		subgraph cluster_8a9d39f9f6 {
+			label=""
+			bgcolor="white"
+
+			struct_Label_8a9d39f9f6 [
+			label=<
+				<TABLE BORDER="1" CELLBORDER="3" CELLSPACING="0" CELLPADDING="5" WIDTH="150" HEIGHT="10">
+					<TR>
+						<TD SIDES="b" ALIGN="TEXT">Login</TD>
+					</TR>
+				</TABLE>
+			>];
+
+			struct_Elems_1a3fe3e3b7 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_1a3fe3e3b7"><IMG SRC="Login_Login_Users.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_388d0b0289 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_388d0b0289"><IMG SRC="Login_Login_Log_in.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_820c457e58 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_820c457e58"><IMG SRC="Login_Login_Sign_up.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+		}
+
+	}
+
+	subgraph cluster_32d7e82082 {
+		label="Control"
+		bgcolor="lightblue"
+
+		cluster_anchor_32d7e82082 [label="" fixedsize=shape width=0 height=0]
+
+		subgraph cluster_0b4b1a2af6 {
+			label=""
+			bgcolor="white"
+
+			struct_Label_0b4b1a2af6 [
+			label=<
+				<TABLE BORDER="1" CELLBORDER="3" CELLSPACING="0" CELLPADDING="5" WIDTH="150" HEIGHT="10">
+					<TR>
+						<TD SIDES="b" ALIGN="TEXT">Main</TD>
+						<TD SIDES="b" BORDER="1">...</TD>
+					</TR>
+				</TABLE>
+			>];
+
+			struct_Elems_614d3f4e3c [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_614d3f4e3c"><IMG SRC="Control_Main_Create_New_Earth_Sample.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_bf1a451146 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_bf1a451146"><IMG SRC="Control_Main_Scan_QR_Code.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_5120396b78 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_5120396b78"><IMG SRC="Control_Main_Existing_Earth_Sample.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+		}
+
+		subgraph cluster_dcda08ad4f {
+			label=""
+			bgcolor="white"
+
+			struct_Label_dcda08ad4f [
+			label=<
+				<TABLE BORDER="1" CELLBORDER="3" CELLSPACING="0" CELLPADDING="5" WIDTH="150" HEIGHT="10">
+					<TR>
+						<TD SIDES="b" BORDER="1">...</TD>
+						<TD SIDES="b" ALIGN="TEXT">IDS</TD>
+						<TD SIDES="b" BORDER="1">...</TD>
+					</TR>
+				</TABLE>
+			>];
+
+		}
+
+		subgraph cluster_b5348d5536 {
+			label=""
+			bgcolor="white"
+
+			struct_Label_b5348d5536 [
+			label=<
+				<TABLE BORDER="1" CELLBORDER="3" CELLSPACING="0" CELLPADDING="5" WIDTH="150" HEIGHT="10">
+					<TR>
+						<TD SIDES="b" BORDER="1">...</TD>
+						<TD SIDES="b" ALIGN="TEXT">Search</TD>
+					</TR>
+				</TABLE>
+			>];
+
+			struct_Elems_b430ed08aa [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR>
+						<TD PORT="_694e4e9057"><IMG SRC="Control_Search_Search_Term.svg"></IMG></TD>
+						<TD PORT="_00a6aefbda"><IMG SRC="Control_Search_Search_Button.svg"></IMG></TD>
+					</TR>
+				</TABLE>
+			>];
+
+			struct_Elems_89e10496a5 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_89e10496a5"><IMG SRC="Control_Search_Entity_List.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+		}
+
+	}
+
+	subgraph cluster_f68bb5eceb {
+		label="Earth Sample"
+		bgcolor="lightblue"
+
+		cluster_anchor_f68bb5eceb [label="" fixedsize=shape width=0 height=0]
+
+		subgraph cluster_aa9e35a763 {
+			label=""
+			bgcolor="white"
+
+			struct_Label_aa9e35a763 [
+			label=<
+				<TABLE BORDER="1" CELLBORDER="3" CELLSPACING="0" CELLPADDING="5" WIDTH="150" HEIGHT="10">
+					<TR>
+						<TD SIDES="b" ALIGN="TEXT">Earth Sample</TD>
+					</TR>
+				</TABLE>
+			>];
+
+			struct_Elems_fbbefee9a9 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_fbbefee9a9"><IMG SRC="Earth_Sample_Earth_Sample_connectToBluetooth.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_780e010271 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_780e010271"><IMG SRC="Earth_Sample_Earth_Sample_Print_QR_Code.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_6051c692ea [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_6051c692ea"><IMG SRC="Earth_Sample_Earth_Sample_Print_Barcode.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_41180a7ba0 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_41180a7ba0"><IMG SRC="Earth_Sample_Earth_Sample_IGSN_Identifier.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_5dbdca57dc [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_5dbdca57dc"><IMG SRC="Earth_Sample_Earth_Sample_Material.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_2f288dd4c4 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_2f288dd4c4"><IMG SRC="Earth_Sample_Earth_Sample_Description.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+			struct_Elems_c18c4b7ec7 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR>
+						<TD PORT="_1a7920a252"><IMG SRC="Earth_Sample_Earth_Sample_Latitude.svg"></IMG></TD>
+						<TD PORT="_4315e595d0"><IMG SRC="Earth_Sample_Earth_Sample_Longitude.svg"></IMG></TD>
+					</TR>
+				</TABLE>
+			>];
+
+			struct_Elems_e4e8d7d3e8 [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR>
+						<TD PORT="_4a6f262ee6"><IMG SRC="Earth_Sample_Earth_Sample_Northing.svg"></IMG></TD>
+						<TD PORT="_32d735ed35"><IMG SRC="Earth_Sample_Earth_Sample_Easting.svg"></IMG></TD>
+						<TD PORT="_6f26d0ff23"><IMG SRC="Earth_Sample_Earth_Sample_Accuracy.svg"></IMG></TD>
+					</TR>
+				</TABLE>
+			>];
+
+			struct_Elems_1b42c14a4a [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_1b42c14a4a"><IMG SRC="Earth_Sample_Earth_Sample_Take_From_GPS_1.svg"/></TD></TR>
+				</TABLE>
+			>];
+
+		}
+
+	}
+
+	/* Intra-tab, label-to-label links */
+	struct_Label_0b4b1a2af6 -> struct_Label_dcda08ad4f
+	struct_Label_dcda08ad4f -> struct_Label_b5348d5536
+	/* Graph-constraining links */
+	cluster_anchor_9d6322c1f4 -> cluster_anchor_32d7e82082 [style=invis]
+	cluster_anchor_32d7e82082 -> cluster_anchor_f68bb5eceb [style=invis]
+	/* User-specified links */
+	struct_Elems_388d0b0289:_388d0b0289 -> struct_Label_0b4b1a2af6 [constraint=false]
+	struct_Elems_614d3f4e3c:_614d3f4e3c -> struct_Label_aa9e35a763 [constraint=false]
+}

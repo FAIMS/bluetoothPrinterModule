@@ -1,10 +1,11 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='utf-8'?>
 <h:html xmlns:h="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:jr="http://openrosa.org/javarosa" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <h:head>
-    <h:title>Fill This In</h:title>
+    <h:title>FILL THIS IN</h:title>
     <model>
       <instance>
-        <faims id="Fill_This_In">
+        <faims id="FILL_THIS_IN">
+          <!--START: Style-->
           <style>
             <orientation>
               <orientation/>
@@ -16,6 +17,7 @@
               <layout_weight/>
             </large>
           </style>
+          <!--END: Style-->
           <Login>
             <Login>
               <Users/>
@@ -25,9 +27,9 @@
           </Login>
           <Control>
             <Main>
-              <Create_New_Test_Record/>
-              <Scan_Test/>
-              <Existing_Tests/>
+              <Create_New_Earth_Sample/>
+              <Scan_QR_Code/>
+              <Existing_Earth_Sample/>
             </Main>
             <IDS/>
             <Search>
@@ -42,23 +44,42 @@
               <Entity_List/>
             </Search>
           </Control>
-          <Test>
-            <Test>
+          <Earth_Sample>
+            <Earth_Sample>
               <connectToBluetooth/>
-              <calibrate/>
-              <testPrint/>
-              <author/>
-              <timestamp/>
-              <testText/>
-              <note/>
-            </Test>
-          </Test>
-          <logic/>
+              <Print_QR_Code/>
+              <Print_Barcode/>
+              <IGSN_Identifier/>
+              <Material/>
+              <Description/>
+              <Colgroup_1>
+                <Col_1>
+                  <Latitude/>
+                </Col_1>
+                <Col_2>
+                  <Longitude/>
+                </Col_2>
+              </Colgroup_1>
+              <Colgroup_2>
+                <Col_1>
+                  <Northing/>
+                </Col_1>
+                <Col_2>
+                  <Easting/>
+                </Col_2>
+                <Col_3>
+                  <Accuracy/>
+                </Col_3>
+              </Colgroup_2>
+              <Take_From_GPS_1/>
+            </Earth_Sample>
+          </Earth_Sample>
         </faims>
       </instance>
     </model>
   </h:head>
   <h:body>
+    <!--START: Style-->
     <group ref="style">
       <label/>
       <group ref="orientation">
@@ -80,15 +101,16 @@
         </input>
       </group>
     </group>
+    <!--END: Style-->
     <group ref="Login">
       <label>{Login}</label>
       <group ref="Login">
         <label>{Login}</label>
-        <select1 ref="Users" faims_certainty="false" faims_annotation="false">
+        <select1 ref="Users">
           <label>{Users}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
         <trigger ref="Log_in">
@@ -103,17 +125,17 @@
       <label>{Control}</label>
       <group ref="Main" faims_scrollable="false">
         <label>{Main}</label>
-        <trigger ref="Create_New_Test_Record" faims_certainty="false" faims_annotation="false">
-          <label>{Create_New_Test_Record}</label>
+        <trigger ref="Create_New_Earth_Sample">
+          <label>{Create_New_Earth_Sample}</label>
         </trigger>
-        <trigger ref="Scan_Test" faims_certainty="false" faims_annotation="false">
-          <label>{Scan_Test}</label>
+        <trigger ref="Scan_QR_Code">
+          <label>{Scan_QR_Code}</label>
         </trigger>
-        <select1 appearance="compact" ref="Existing_Tests" faims_annotation="false" faims_certainty="false">
-          <label>{Existing_Tests}</label>
+        <select1 appearance="compact" ref="Existing_Earth_Sample">
+          <label>{Existing_Earth_Sample}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
       </group>
@@ -121,19 +143,19 @@
         <label>{IDS}</label>
       </group>
       <group ref="Search" faims_scrollable="false">
-        <label>{search}</label>
-        <group faims_style="orientation" ref="Colgroup_0">
+        <label>{Search}</label>
+        <group ref="Colgroup_0" faims_style="orientation">
           <label/>
-          <group faims_style="even" ref="Col_0">
+          <group ref="Col_0" faims_style="even">
             <label/>
             <input ref="Search_Term">
               <label>{Search_Term}</label>
             </input>
           </group>
-          <group faims_style="large" ref="Col_1">
+          <group ref="Col_1" faims_style="large">
             <label/>
             <trigger ref="Search_Button">
-              <label>{Search}</label>
+              <label>{Search_Button}</label>
             </trigger>
           </group>
         </group>
@@ -146,33 +168,67 @@
         </select1>
       </group>
     </group>
-    <group ref="Test" faims_archent_type="Test">
-      <label>{Test}</label>
-      <group ref="Test">
-        <label>{Test}</label>
+    <group ref="Earth_Sample" faims_archent_type="Earth Sample">
+      <label>{Earth_Sample}</label>
+      <group ref="Earth_Sample">
+        <label>{Earth_Sample}</label>
         <trigger ref="connectToBluetooth">
           <label>{connectToBluetooth}</label>
         </trigger>
-        <trigger ref="calibrate">
-          <label>{calibrate}</label>
+        <trigger ref="Print_QR_Code">
+          <label>{Print_QR_Code}</label>
         </trigger>
-        <trigger ref="testPrint">
-          <label>{testPrint}</label>
+        <trigger ref="Print_Barcode">
+          <label>{Print_Barcode}</label>
         </trigger>
-        <input ref="author" faims_attribute_name="Test author" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
-          <label>{author}</label>
-          <!--WARNING: Flags ignored-->
+        <input faims_attribute_name="IGSN Identifier" faims_attribute_type="measure" ref="IGSN_Identifier">
+          <label>{IGSN_Identifier}</label>
         </input>
-        <input ref="timestamp" faims_attribute_name="Test timestamp" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
-          <label>{Created_at}</label>
-          <!--WARNING: Flags ignored-->
+        <input faims_attribute_name="Material" faims_attribute_type="measure" ref="Material">
+          <label>{Material}</label>
         </input>
-        <input faims_attribute_type="measure" ref="testText" faims_attribute_name="testText">
-          <label>{testText}</label>
+        <input faims_attribute_name="Description" faims_attribute_type="measure" ref="Description">
+          <label>{Description}</label>
         </input>
-        <input faims_attribute_type="measure" ref="note" faims_attribute_name="note">
-          <label>{note}</label>
-        </input>
+        <group ref="Colgroup_1" faims_style="orientation">
+          <label/>
+          <group ref="Col_1" faims_style="even">
+            <label/>
+            <input faims_attribute_name="Latitude" faims_attribute_type="measure" ref="Latitude" faims_read_only="true">
+              <label>{Latitude}</label>
+            </input>
+          </group>
+          <group ref="Col_2" faims_style="even">
+            <label/>
+            <input faims_attribute_name="Longitude" faims_attribute_type="measure" ref="Longitude" faims_read_only="true">
+              <label>{Longitude}</label>
+            </input>
+          </group>
+        </group>
+        <group ref="Colgroup_2" faims_style="orientation">
+          <label/>
+          <group ref="Col_1" faims_style="even">
+            <label/>
+            <input faims_attribute_name="Northing" faims_attribute_type="measure" ref="Northing" faims_read_only="true">
+              <label>{Northing}</label>
+            </input>
+          </group>
+          <group ref="Col_2" faims_style="even">
+            <label/>
+            <input faims_attribute_name="Easting" faims_attribute_type="measure" ref="Easting" faims_read_only="true">
+              <label>{Easting}</label>
+            </input>
+          </group>
+          <group ref="Col_3" faims_style="even">
+            <label/>
+            <input faims_attribute_name="Accuracy" faims_attribute_type="measure" ref="Accuracy" faims_read_only="true">
+              <label>{Accuracy}</label>
+            </input>
+          </group>
+        </group>
+        <trigger ref="Take_From_GPS_1">
+          <label>{Take_From_GPS}</label>
+        </trigger>
       </group>
     </group>
   </h:body>
