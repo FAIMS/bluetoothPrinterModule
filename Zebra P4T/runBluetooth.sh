@@ -4,7 +4,7 @@ set -euo pipefail
 
 #screen
 
-sudo rfcomm bind rfcomm0 AC:3F:A4:5E:68:2C
+sudo rfcomm connect rfcomm0 AC:3F:A4:5E:68:2C
 sudo ./miniterm.py /dev/rfcomm0
 sudo rfcomm release all
 

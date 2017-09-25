@@ -82,13 +82,19 @@ void printQR() {
 
   FetchCallback printCallback = new FetchCallback() {
     onFetch(result) {      
-		message  = "\n^XA^POI^FO12,0^XGE:FAIMS-BL.PCX,1.1,1.1^FS^FO15,160^A0,20,20^FDwww.fedarch.org^FS\n";
-		message += "^FO170,0^A0,50,50^TBN,455,120^FD{id}^FS\n";
-		message += "^FO170,125^A0,20,20^FDEntity: {aent}. Name: {createdby}^FS\n";		
-		message += "^FO170,145^A0,20,20^FDModule: {moduleName}^FS\n";
-		message += "^FO170,165^A0,20,20^FDCreated at: {createdat} GMT^FS\n";
-		message += "^FO630,0^BQ,2,8^FDQM,N{uuid}^FS\n";
-		message += "^XZ\n";
+		message = "^XA^POI \n";
+		message += "^FO15,10^A0,30,30^FD{id}^FS \n";
+		message += "^FO15,45^A0,30,30^FD{aent}^FS \n";
+		message += "^FO15,80^A0,30,30^FD{createdat}^FS \n";
+		message += "^FO15,115^A0,30,30^FD{createdby}^FS \n";
+		message += "^FO15,145^A0,30,30^FD{modulename}^FS \n";
+		message += "^FO15,178^A0,30,30^FD{uuid}^FS \n";
+		message += "^FO450,30 \n";
+		message += "^BQ,2,5 \n";
+		message += "^FDHA,http://igsn.org/{uuid}^FS \n";
+		message += "^FO440,10^A0,20,20^FDigsn.org/{uuid}^FS \n";
+		message += "^XZ \n";
+
 
 
 		message = replaceFirst(message, "{uuid}", result.get(0));

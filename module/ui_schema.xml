@@ -22,6 +22,7 @@
             <Login>
               <Users/>
               <Log_in/>
+              <Signup_Guide_1/>
               <Sign_up/>
             </Login>
           </Login>
@@ -116,6 +117,9 @@
         <trigger ref="Log_in">
           <label>{Log_in}</label>
         </trigger>
+        <input faims_web="true" ref="Signup_Guide_1">
+          <label/>
+        </input>
         <trigger ref="Sign_up">
           <label>{Sign_up}</label>
         </trigger>
@@ -155,7 +159,7 @@
           <group ref="Col_1" faims_style="large">
             <label/>
             <trigger ref="Search_Button">
-              <label>{Search_Button}</label>
+              <label>{Search}</label>
             </trigger>
           </group>
         </group>

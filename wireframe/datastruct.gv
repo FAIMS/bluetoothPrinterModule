@@ -47,6 +47,13 @@ digraph {
 				</TABLE>
 			>];
 
+			struct_Elems_4573b4f41b [
+			label=<
+				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
+					<TR><TD PORT="_4573b4f41b"><IMG SRC="Login_Login_Signup_Guide_1.svg"/></TD></TR>
+				</TABLE>
+			>];
+
 			struct_Elems_820c457e58 [
 			label=<
 				<TABLE BORDER="0" CELLSPACING="0" WIDTH="150">
