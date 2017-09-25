@@ -1,0 +1,8 @@
+! U1 setvar "bluetooth.enable" "on"
+! U1 setvar "bluetooth.friendly_name" "CSIROP4T"
+! U1 setvar "bluetooth.discoverable" "on"
+! U1 setvar "bluetooth.authentication" "off"
+! U1 setvar "bluetooth.bluetooth_pin" ""
+! U1 setvar "bluetooth.afh_mode" "off"
+! U1 setvar "bluetooth.afh_map" ""
+! U1 do "device.reset" ""

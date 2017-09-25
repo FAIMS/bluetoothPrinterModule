@@ -1,0 +1,1 @@
+SELECT uuid, response, aenttypename, createdby, createdat FROM latestNonDeletedArchEntFormattedIdentifiers JOIN createdmodifiedatby using (uuid);

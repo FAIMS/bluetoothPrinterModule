@@ -1,0 +1,194 @@
+A label file always begins with the "!" character followed by an "x" offset parameter  "x" and "y" axis
+resolutions  a label length and finally a quantity of labels to print. The line containing these parameters is
+referred to as the Command Start Line.
+A label file always begins with the Command Start Line and ends with the "PRINT" command. The
+commands that build specific labels are placed between these two co
+
+
+<!> {offset} <200> <200> {height} {qty}
+
+
+The x and y coordinates are expressed here in terms of dots. Coordinates in ( ) are for 200 dot per inch
+printers. On 200 d.p.i. printers  8 dots (either horizontally or vertically) equal 1 millimeter and 203 dots
+equate approximately to 1 inch.
+Coordinates in [ ] are for 300 dot per inch
+printers. On 300 d.p.i. printers 12 dots
+Label Width
+equal 1 millimeter  and 305 dots equate
+approximately to 1 inch.
+
+0 0 600 0
+0 200 600 200
+
+0 0 900 0
+0 300 900 300
+
+
+
+
+{command} {type} {x} {y} [M n] [U n]
+{data}
+<ENDQR>
+where: {command}: Choose from the following:
+BARCODE (or B): Prints bar code horizontally.
+VBARCODE (or VB): Prints bar code vertically.
+{type}:QR
+{x}: Horizontal starting position.
+{y}: Vertical starting position.
+[M n]: QR code model number. Range is 1 or 2. QR Code Model 1 is the original specification  while QR Code Model 2 is an enhanced form of the symbology. Model 2 provides additional features and can be automatically differentiated from Model 1. Model 2 is the recommended model and is the default value.
+
+[U n]: Unit-width/Unit-height of the module. Range is 1 to 32. Default is 6.
+
+{data} includes some mode selection symbols in addition to actual input data character string. The type of the input data could be recognized automatically by printer software or set "manually". There is a separator (comma) between mode selection symbols and the actual data.
+
+Data field format for Automatic data type selection:
+
+<Error Correction Level><Mask No.><Data Input Mode (should be "A")> <Data Character String>
+Error Correction Level should be one of the following symbols:
+H - Ultra high reliability level (Level H);
+Q - High reliability level (Level Q);
+M - Standard level (Level M);
+L - High density level (Level L).
+
+Mask Number may be omitted or have a value from 0 to 8:
+None - Automatic selection of the mask by software;
+From 0 to 7 -- use mask with corresponding number (0 to 7);
+8 - No mask.
+
+Data field format for manual data type selection includes additional character mode symbols
+and has the following format:
+<Error Correction Level><Mask No.><Data Input Mode (should be "M")> 
+<Character Mode 1><Data Character String 1>  <Character Mode 2><Data Character String2> < : ><:> <Character Mode n><Data Character String n>
+
+Character mode symbols:
+N -- Numeric;
+A - Alphanumeric;
+Bxxxx -- Binary Binary mode includes number of data characters (xxxx) represented
+by 2 bytes of BCD code.
+K -- Kanji
+
+Different data fields (with their corresponding character mode symbols) are separated by
+commas.
+
+When the input mode is set to Automatic the binary codes of 0x80 to 0x9F and 0xe0 to 0xFF
+cannot be set.
+<ENDQR>: Terminates QR cod
+
+
+FORM Command
+The FORM command instructs the printer to feed to top of form after printing.
+Format:
+{command}
+where:
+{command}: FORM
+In the following example  the printer will execute a form feed after the label is printed. See the SETFF
+(set form feed) command in the section on designing receipts and lists for information on setting printer
+behavior when the FORM command is executed
+
+
+UNITS Commands
+The units commands are used to specify a measurement system for all subsequent command fields in a
+control session. Coordinates  widths  and heights for all control commands can be entered with precision
+to four decimal places. By placing a units command immediately after the first line in a control session 
+the specified measurement system will also apply to the offset and height fields. The printer measurement
+system will default to dots until a units command is issued.
+Format:
+{command}
+where:
+{command}: Choose from the following:
+		IN-INCHES
+Measurement in inches.
+		IN-CENTIMETERS
+Measurement in centimeters.
+		IN-MILLIMETERS
+Measurement in millimeters.
+		IN-DOTS
+Measurement in dots.
+
+TEXT Commands
+The TEXT command is used to place text on a label. This command and its variants control the specific
+font number and size used  the location of the text on the label  and the orientation of this text. Standard
+resident fonts can be rotated in 90 ̊ increments as shown in the example.
+Format:
+{command} {font} {size} {x} {y} {data}
+
+{font}: Name/number of the font.
+{size}: Size identifier for the font.
+{x}: Horizontal starting position.
+{y}: Vertical starting position.
+{data}: The text to be printed.
+
+SCALE-TO-FIT Commands
+The SCALE-TO-FIT commands automatically calculate the scale in order to fit text inside a window.
+Format:
+{command} {name} {width} {height} {x} {y} {data}
+where:
+{command}: Choose from the following:
+		
+SCALE-TO-FIT (or STF): Prints scaled text horizontally.
+
+{name}: Font name.
+{width}: Unit-width of the window.
+{height}: Unit-height of the window.
+{x}: Horizontal starting position.
+{y}: Vertical starting position.
+{data}: Text to be printed
+
+SCALE-TO-FIT Command Example
+Input:
+! 0 200 200 100 1
+IN-MILLIMETERS
+CENTER
+; Fit a text string into an area 40mm wide by 10mm ; high
+SCALE-TO-FIT PLL_LAT.CSF 40 10 0 10 SALE
+; Fit a longer text string into the same 40mm wide ; by 10mm high area
+SCALE-TO-FIT PLL_LAT.CSF 40 10 0 20 SALE PRICE
+; Fit "SALE" text into a 40mm wide by 20mm high ; area
+SCALE-TO-FIT PLL_LAT.CSF 40 20 0 30 SALE
+FORM
+PRINT
+
+
+rmat:
+{command} {x 0 } {y 0 } {x 1 } {y 1 } {width}
+where:
+{command}: BOX
+{x 0 }: X-coordinate of the top left corner.
+{y 0 }: Y-coordinate of the top left corner.
+{x 1 }: X-coordinate of the bottom right corner.
+{y 1 }: Y-coordinate of the bottom right corner.
+{width}: Unit-width (or thickness) of the lines forming the box.
+
+
+B QR 0 0 M 2 U 10
+MA QR code ABC123
+ENDQR
+
+
+0 x offset
+600 dpi (horiz)
+600 dpi (vert)
+600 (24*25mm) length
+1 copy
+
+! 0 200 200 200 1
+IN-MILLIMETERS
+BOX 0 0 75 25 0.1
+BOX 1 1 74 24 0.1
+BOX 2 2 73 23 0.1
+BOX 3 3 72 22 0.1
+BOX 4 4 71 21 0.1
+SCALE-TO-FIT PLL_LAT.CSF 40 10 0 0 http://igsn.org/AAbbb0000
+B QR 50 0 2 6 
+MA http://igsn.org/AAbbb0000
+ENDQR
+FORM
+PRINT
+
+! U1 getvar "media.feed_length"
+! U1 getvar "media.sense_mode"
+! U1 getvar "media.media_type"
+! U1 setvar "media.media_type" "label"
+! U1 getvar "media.width_sense.enable"
+! U1 getvar "media.width_sense.in_mm"
+

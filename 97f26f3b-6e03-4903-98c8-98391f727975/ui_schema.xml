@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<h:html xmlns:h="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:jr="http://openrosa.org/javarosa" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>Fill This In</h:title>
+    <model>
+      <instance>
+        <faims id="Fill_This_In">
+          <style>
+            <orientation>
+              <orientation/>
+            </orientation>
+            <even>
+              <layout_weight/>
+            </even>
+            <large>
+              <layout_weight/>
+            </large>
+          </style>
+          <Login>
+            <Login>
+              <Users/>
+              <Log_in/>
+              <Sign_up/>
+            </Login>
+          </Login>
+          <Control>
+            <Main>
+              <Create_New_Test_Record/>
+              <Scan_Test/>
+              <Existing_Tests/>
+            </Main>
+            <IDS/>
+            <Search>
+              <Colgroup_0>
+                <Col_0>
+                  <Search_Term/>
+                </Col_0>
+                <Col_1>
+                  <Search_Button/>
+                </Col_1>
+              </Colgroup_0>
+              <Entity_List/>
+            </Search>
+          </Control>
+          <Test>
+            <Test>
+              <connectToBluetooth/>
+              <calibrate/>
+              <testPrint/>
+              <author/>
+              <timestamp/>
+              <testText/>
+              <note/>
+            </Test>
+          </Test>
+          <logic/>
+        </faims>
+      </instance>
+    </model>
+  </h:head>
+  <h:body>
+    <group ref="style">
+      <label/>
+      <group ref="orientation">
+        <label/>
+        <input ref="orientation">
+          <label>horizontal</label>
+        </input>
+      </group>
+      <group ref="even">
+        <label/>
+        <input ref="layout_weight">
+          <label>1</label>
+        </input>
+      </group>
+      <group ref="large">
+        <label/>
+        <input ref="layout_weight">
+          <label>3</label>
+        </input>
+      </group>
+    </group>
+    <group ref="Login">
+      <label>{Login}</label>
+      <group ref="Login">
+        <label>{Login}</label>
+        <select1 ref="Users" faims_certainty="false" faims_annotation="false">
+          <label>{Users}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <trigger ref="Log_in">
+          <label>{Log_in}</label>
+        </trigger>
+        <trigger ref="Sign_up">
+          <label>{Sign_up}</label>
+        </trigger>
+      </group>
+    </group>
+    <group ref="Control">
+      <label>{Control}</label>
+      <group ref="Main" faims_scrollable="false">
+        <label>{Main}</label>
+        <trigger ref="Create_New_Test_Record" faims_certainty="false" faims_annotation="false">
+          <label>{Create_New_Test_Record}</label>
+        </trigger>
+        <trigger ref="Scan_Test" faims_certainty="false" faims_annotation="false">
+          <label>{Scan_Test}</label>
+        </trigger>
+        <select1 appearance="compact" ref="Existing_Tests" faims_annotation="false" faims_certainty="false">
+          <label>{Existing_Tests}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+      </group>
+      <group ref="IDS">
+        <label>{IDS}</label>
+      </group>
+      <group ref="Search" faims_scrollable="false">
+        <label>{search}</label>
+        <group faims_style="orientation" ref="Colgroup_0">
+          <label/>
+          <group faims_style="even" ref="Col_0">
+            <label/>
+            <input ref="Search_Term">
+              <label>{Search_Term}</label>
+            </input>
+          </group>
+          <group faims_style="large" ref="Col_1">
+            <label/>
+            <trigger ref="Search_Button">
+              <label>{Search}</label>
+            </trigger>
+          </group>
+        </group>
+        <select1 appearance="compact" ref="Entity_List">
+          <label>{Entity_List}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>Options not loaded</value>
+          </item>
+        </select1>
+      </group>
+    </group>
+    <group ref="Test" faims_archent_type="Test">
+      <label>{Test}</label>
+      <group ref="Test">
+        <label>{Test}</label>
+        <trigger ref="connectToBluetooth">
+          <label>{connectToBluetooth}</label>
+        </trigger>
+        <trigger ref="calibrate">
+          <label>{calibrate}</label>
+        </trigger>
+        <trigger ref="testPrint">
+          <label>{testPrint}</label>
+        </trigger>
+        <input ref="author" faims_attribute_name="Test author" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
+          <label>{author}</label>
+          <!--WARNING: Flags ignored-->
+        </input>
+        <input ref="timestamp" faims_attribute_name="Test timestamp" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
+          <label>{Created_at}</label>
+          <!--WARNING: Flags ignored-->
+        </input>
+        <input faims_attribute_type="measure" ref="testText" faims_attribute_name="testText">
+          <label>{testText}</label>
+        </input>
+        <input faims_attribute_type="measure" ref="note" faims_attribute_name="note">
+          <label>{note}</label>
+        </input>
+      </group>
+    </group>
+  </h:body>
+</h:html>

@@ -1,0 +1,12 @@
+^XA^POI
+^FO15,10^A0,30,30^FD<Sample Ident>^FS
+^FO15,45^A0,30,30^FD<Sample Type>^FS
+^FO15,80^A0,30,30^FD<Date>^FS
+^FO15,115^A0,30,30^FDhttp://igsn.org/AAbbb1234^FS
+^FO15,145^A0,30,30^FDRow 5^FS
+^FO15,178^A0,30,30^FDRow 6^FS
+^FO450,30
+^BQ,2,5
+^FDHA,http://igsn.org/AAbbb1234^FS
+^FO440,10^A0,20,20^FDigsn.org/AAbbb1234^FS
+^XZ

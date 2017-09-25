@@ -1,0 +1,3 @@
+sessionname rfcomm
+screen -t sudo rfcomm connect rfcomm0 AC:3F:A4:5E:68:2C
+screen -t sudo ./miniterm.py /dev/rfcomm0
